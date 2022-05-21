@@ -5,10 +5,10 @@ import pandas as pd
 import psycopg2
 from psycopg2.extras import execute_values
 from pandas import DataFrame
-from sqlalchemy import create_engine
 
 CRAWLER_PREFIX = 'crawler_file'
 TRANSFORM_PREFIX = 'transform_file'
+DESTINATION = 'destination'
 
 
 class BaseHandler:
@@ -52,6 +52,12 @@ class BaseHandler:
 
         with open(path, "w") as out_file:
             json.dump(data, out_file)
+        print(f'Successfully to write {len(data)} to {path}')
+
+    def write_excel(self, data: DataFrame, prefix: str, product: str):
+        file_name = f"{product}.xlsx"
+        path = f"{prefix}/{file_name}"
+        data.to_excel(path)
         print(f'Successfully to write {len(data)} to {path}')
 
     def read_json(self, prefix: str, product: str):
