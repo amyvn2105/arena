@@ -117,9 +117,7 @@ class Handler(BaseHandler):
 
 if __name__ == '__main__':
     crawler = Handler()
-    crawler.product = 'dien thoai'
-    time = datetime.now()
+    crawler.product = input('Nhập vào sản phẩm: ')
     crawler._crawl()
     crawler._transform()
     crawler._load()
-    # print(datetime.now() - time)
