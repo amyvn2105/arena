@@ -1,4 +1,4 @@
-from core.handler import BaseHandler, CRAWLER_PREFIX, TRANSFORM_PREFIX
+from core.handler import BaseHandler, CRAWLER_PREFIX, TRANSFORM_PREFIX, DESTINATION
 from core.tiki import TikiClient
 from datetime import datetime
 import os
@@ -67,6 +67,14 @@ class Handler(BaseHandler):
         items = self.read_json(prefix=prefix, product=self.product)
         self._bulk_upsert(schema='crawler', table_name='product', connection=CONNECTION, items=items)
 
+    def _export_to_excel(self):
+        date = datetime.now()
+        prefix = self.get_prefix(method=TRANSFORM_PREFIX, date=date)
+        items = self.read_json(prefix=prefix, product=self.product)
+        export_prefix = self.get_prefix(method=DESTINATION, date=date)
+        df = self._to_dataFrame(data=items)
+        self.write_excel(data=df, prefix=export_prefix, product=self.product)
+
     def get_prefix(self, method: str, date: datetime):
         day = date.strftime('%Y/%m/%d')
         path = f"{PREFIX}/{method}/{day}"
@@ -118,6 +126,7 @@ class Handler(BaseHandler):
 if __name__ == '__main__':
     crawler = Handler()
     crawler.product = input('Nhập vào sản phẩm: ')
-    crawler._crawl()
+    # crawler._crawl()
     crawler._transform()
-    crawler._load()
+    # crawler._load()
+    crawler._export_to_excel()
