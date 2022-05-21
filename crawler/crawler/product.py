@@ -4,7 +4,7 @@ from datetime import datetime
 import os
 
 COOKIE = '_trackity=c5171f6c-5b54-f8d6-09e4-746e5e737130'
-PREFIX = '/Users/eq-0327/Documents/Project/arena/crawler'
+PREFIX = f'{os.getcwd()}/..'
 PLATFORM = 'TIKI'
 CONNECTION = {
     'host': 'localhost',
@@ -117,9 +117,9 @@ class Handler(BaseHandler):
 
 if __name__ == '__main__':
     crawler = Handler()
-    crawler.product = 'laptop'
+    crawler.product = 'dien thoai'
     time = datetime.now()
     crawler._crawl()
     crawler._transform()
     crawler._load()
-    print(datetime.now() - time)
+    # print(datetime.now() - time)
