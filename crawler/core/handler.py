@@ -1,5 +1,4 @@
 import json
-import logging
 
 import pandas as pd
 import psycopg2
@@ -14,7 +13,7 @@ DESTINATION = 'destination'
 class BaseHandler:
 
     def __init__(self) -> None:
-        self.product: str = None
+        self.product: str
 
     def _crawl(self):
         pass
@@ -57,7 +56,7 @@ class BaseHandler:
     def write_excel(self, data: DataFrame, prefix: str, product: str):
         file_name = f"{product}.xlsx"
         path = f"{prefix}/{file_name}"
-        data.to_excel(path)
+        data.to_excel(path, index=False, engine='xlsxwriter')
         print(f'Successfully to write {len(data)} to {path}')
 
     def read_json(self, prefix: str, product: str):
@@ -81,14 +80,20 @@ class BaseHandler:
         cur = conn.cursor()
         columns = ','.join(items[0].keys())
         table = f'{schema}.{table_name}'
-        query = "INSERT INTO {} ({}) VALUES %s".format(table, columns)
+        # query = "INSERT INTO {} ({}) VALUES %s".format(table, columns)
+        query = '''
+        INSERT INTO {} ({})
+        VALUES %s 
+        ON CONFLICT ON CONSTRAINT product_pkey 
+        DO NOTHING;
+        '''.format(table, columns)
 
         values = [[value for value in item.values()] for item in items]
         try:
             execute_values(cur=cur, sql=query, argslist=values)
             print(f'Successfully insert {len(items)} records into {table}')
         except Exception as e:
-            logging.error(e)
+            print(e)
 
         conn.commit()
         conn.close()

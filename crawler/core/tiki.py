@@ -6,14 +6,14 @@ class TikiClient(BaseClient):
         self.headers = {
             'accept': 'application/json, text/plain, */*',
             'accept-language': 'en-US,en;q=0.9,vi;q=0.8',
-            'referer': 'https://tiki.vn/search?q=laptop',
+            'referer': 'https://tiki.vn/',
             'sec-ch-ua': '" Not A;Brand";v="99", "Chromium";v="101", "Google Chrome";v="101"',
             'sec-ch-ua-mobile': '?0',
             'sec-ch-ua-platform': '"macOS"',
             'sec-fetch-dest': 'empty',
             'sec-fetch-mode': 'cors',
             'sec-fetch-site': 'same-origin',
-            'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36',
+            'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36', # noqa
             'x-guest-token': 'fS5jQwqAUMucVvbWl19teNEIRKzko2Zr'
         }
 

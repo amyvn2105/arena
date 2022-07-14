@@ -1,3 +1,5 @@
+import logging
+
 from core.handler import BaseHandler, CRAWLER_PREFIX, TRANSFORM_PREFIX, DESTINATION
 from core.tiki import TikiClient
 from datetime import datetime
@@ -43,6 +45,7 @@ class Handler(BaseHandler):
             return self.get_data(product, page, product_list)
 
     def _crawl(self):
+        # product = input('Nhập vào sản phẩm: ')
         date = datetime.now()
         try:
             data = self.get_data(product=self.product, page=1, product_list=[])
@@ -58,8 +61,8 @@ class Handler(BaseHandler):
         prefix = self.get_prefix(method=CRAWLER_PREFIX, date=date)
         raw_data = self.read_json(prefix=prefix, product=self.product)
         items = self._parse(raw_data)
-        res_list = list({frozenset(item.values()): item for item in items}.values())
-        return res_list
+        # res_list = list({frozenset(item.values()): item for item in items}.values())
+        return items
 
     def _load(self):
         date = datetime.now()
@@ -124,9 +127,9 @@ class Handler(BaseHandler):
 
 
 if __name__ == '__main__':
-    crawler = Handler()
-    crawler.product = input('Nhập vào sản phẩm: ')
-    # crawler._crawl()
-    crawler._transform()
-    # crawler._load()
-    crawler._export_to_excel()
+    handler = Handler()
+    handler.product = input("Nhập vào sản phẩm bạn cần tìm kiếm: ")
+    handler._crawl()
+    handler._transform()
+    handler._export_to_excel()
+    handler._load()
